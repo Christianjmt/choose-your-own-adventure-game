@@ -13,11 +13,11 @@ public class Game
         Dragon dragon = new Dragon(die);
 
         // Language selection shown before Messages dictionary is loaded
-        Console.WriteLine("Select language / Selecciona idioma / Choisissez la langue:");
-        Console.WriteLine("1. English  2. Espanol  3. Francais");
+        Console.WriteLine("Select language / Selecciona idioma / Choisissez la langue / Seleziona lingua:");
+        Console.WriteLine("1. English  2. Espanol  3. Francais  4. Italiano");
         Console.Write("Enter choice: ");
         string? langInput = Console.ReadLine()?.Trim();
-        string selectedLanguage = langInput switch { "2" => "Spanish", "3" => "French", _ => "English" };
+        string selectedLanguage = langInput switch { "2" => "Spanish", "3" => "French", "4" => "Italian", _ => "English" };
 
         // Initialize Messages with selected language (per sequence diagram)
 
@@ -156,23 +156,23 @@ public class Game
 
                 if (combat.PlayerRetreated)
                 {
-                    return; //combat already handled retreat message
+                    return; // combat already handled retreat message
                 }
                 else
                 {
-                   EndGame(playerWon, false, messages); 
+                    EndGame(playerWon, false, messages);
                 }
-                
+
                 return;
             }
 
-        if (input == "r" || input == "retreat")
-        {
-            Console.WriteLine(messages.GetMessage("retreat"));
-            return;
-        }
+            if (input == "r" || input == "retreat")
+            {
+                Console.WriteLine(messages.GetMessage("retreat"));
+                return;
+            }
 
-        Console.WriteLine(messages.GetMessage("invalid"));
+            Console.WriteLine(messages.GetMessage("invalid"));
+        }
     }
-}
 }

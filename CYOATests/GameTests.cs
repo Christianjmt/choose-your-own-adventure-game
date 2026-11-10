@@ -39,6 +39,13 @@ public class GameTests
     }
 
     [TestMethod]
+    public void EndGame_DoesNotThrow_WhenPlayerWinsInItalian()
+    {
+        Game game = new Game();
+        game.EndGame(true, false, GetMessages("Italian"));
+    }
+
+    [TestMethod]
     public void EndGame_DoesNotThrow_WhenPlayerLosesInSpanish()
     {
         Game game = new Game();
@@ -50,6 +57,13 @@ public class GameTests
     {
         Game game = new Game();
         game.EndGame(false, false, GetMessages("French"));
+    }
+
+    [TestMethod]
+    public void EndGame_DoesNotThrow_WhenPlayerLosesInItalian()
+    {
+        Game game = new Game();
+        game.EndGame(false, false, GetMessages("Italian"));
     }
 
     [TestMethod]
@@ -71,6 +85,13 @@ public class GameTests
     {
         Game game = new Game();
         game.EndGame(false, true, GetMessages("French"));
+    }
+
+    [TestMethod]
+    public void EndGame_DoesNotThrow_WhenPlayerRetreatsInItalian()
+    {
+        Game game = new Game();
+        game.EndGame(false, true, GetMessages("Italian"));
     }
 
     // --- IsValidMenuChoice ---
