@@ -9,8 +9,10 @@ public class Player
     public int Strength { get; set; }
     public int Agility { get; set; }
     public int HealthPoints { get; set; }
+    public int Gold { get; set; } = 50;
 
     public Weapon? Weapon { get; set; }
+    public Armor? Armor { get; set; }
 
     public void CreateCharacter(Messages messages)
     {
@@ -145,11 +147,22 @@ public class Player
         Console.WriteLine(messages.GetMessage("stats_strength") + Strength);
         Console.WriteLine(messages.GetMessage("stats_agility") + Agility);
         Console.WriteLine(messages.GetMessage("stats_health") + HealthPoints);
+        Console.WriteLine(messages.GetMessage("stats_gold") + Gold);
 
         if (Weapon != null)
         {
             Console.WriteLine(messages.GetMessage("stats_weapon") + messages.TranslateWeaponForDisplay(Weapon.Type));
             Console.WriteLine(messages.GetMessage("stats_damage") + Weapon.MaxDamage);
+        }
+
+        if (Armor != null)
+        {
+            Console.WriteLine(messages.GetMessage("stats_armor") + messages.TranslateArmorForDisplay(Armor.Type));
+            Console.WriteLine(messages.GetMessage("stats_armor_defense") + Armor.DamageReduction);
+        }
+        else
+        {
+            Console.WriteLine(messages.GetMessage("stats_armor") + messages.GetMessage("armor_none"));
         }
     }
 

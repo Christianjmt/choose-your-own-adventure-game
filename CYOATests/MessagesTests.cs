@@ -312,4 +312,74 @@ public class MessagesTests
         messages.ReadDictionary();
         Assert.AreEqual("Fighter", messages.NormalizeOccupation("FIGHTER"));
     }
+
+    [TestMethod]
+    [DataRow("English")]
+    [DataRow("Spanish")]
+    [DataRow("French")]
+    [DataRow("Italian")]
+    public void ReadDictionary_LoadsAllMerchantKeys_AcrossLanguages(string language)
+    {
+        Messages messages = new Messages();
+        messages.SetCurrentLanguage(language);
+        messages.ReadDictionary();
+
+        string[] requiredKeys = new[]
+        {
+            "stats_gold",
+            "stats_armor",
+            "stats_armor_defense",
+            "armor_none",
+            "merchant_intro",
+            "merchant_gold_display",
+            "merchant_menu",
+            "merchant_option_armor",
+            "merchant_option_weapon",
+            "merchant_option_exit",
+            "merchant_sold_out_tag",
+            "merchant_bought_armor",
+            "merchant_bought_weapon",
+            "merchant_item_sold_out",
+            "merchant_not_enough_gold",
+            "merchant_leave",
+            "armor_absorbed_damage"
+        };
+
+        foreach (var key in requiredKeys)
+        {
+            string message = messages.GetMessage(key);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(message), $"Key '{key}' was empty in {language}.");
+            Assert.AreNotEqual($"[{key}]", message, $"Key '{key}' was missing in {language}.");
+        }
+    }
+
+    [TestMethod]
+    [DataRow("English", "magical plate armor")]
+    [DataRow("Spanish", "armadura magica de placas")]
+    [DataRow("French", "armure de plaques magique")]
+    [DataRow("Italian", "armatura a piastre magica")]
+    public void TranslateArmorForDisplay_TranslatesCorrectly_AcrossLanguages(string language, string expectedTranslation)
+    {
+        Messages messages = new Messages();
+        messages.SetCurrentLanguage(language);
+        messages.ReadDictionary();
+
+        string result = messages.TranslateArmorForDisplay("magical plate armor");
+        Assert.AreEqual(expectedTranslation, result);
+    }
+
+    [TestMethod]
+    [DataRow("English", "flaming broadsword", "flaming broadsword")]
+    [DataRow("Spanish", "flaming broadsword", "espada ancha llameante")]
+    [DataRow("French", "flaming broadsword", "epee large flamboyante")]
+    [DataRow("Italian", "flaming broadsword", "spadone fiammeggiante")]
+    public void TranslateWeaponForDisplay_TranslatesUpgradedWeapon_AcrossLanguages(string language, string weaponKey, string expectedTranslation)
+    {
+        Messages messages = new Messages();
+        messages.SetCurrentLanguage(language);
+        messages.ReadDictionary();
+
+        string result = messages.TranslateWeaponForDisplay(weaponKey);
+        Assert.AreEqual(expectedTranslation, result);
+    }
 }

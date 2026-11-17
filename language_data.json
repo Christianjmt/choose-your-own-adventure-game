@@ -69,7 +69,24 @@
       "dragon_damage_reply_2": "Impressive! You might actually be worth toasting...",
       "dragon_damage_reply_3": "That... was unexpected. But I assure you, it won't happen again.",
       "dragon_damage_reply_4": "Well, I'll be! You have more bite than I thought!",
-      "enter_choice": "Enter choice: "
+      "enter_choice": "Enter choice: ",
+      "stats_gold": "Gold: ",
+      "stats_armor": "Armor: ",
+      "stats_armor_defense": "Armor Damage Reduction: ",
+      "armor_none": "None",
+      "merchant_intro": "You walk down the south path and enter a hidden glade. A mysterious merchant greets you: 'Greetings traveler! Would you like to buy my magical wares?'",
+      "merchant_gold_display": "Your Gold: {0}",
+      "merchant_menu": "What would you like to buy?",
+      "merchant_option_armor": "1. Magical Armor (30 Gold) - Reduces dragon damage by 4",
+      "merchant_option_weapon": "2. Magical Weapon ({0}) (30 Gold) - Increased damage",
+      "merchant_option_exit": "3. Leave merchant and return to path",
+      "merchant_sold_out_tag": " [SOLD OUT]",
+      "merchant_bought_armor": "You purchased magical plate armor! Your defense increases.",
+      "merchant_bought_weapon": "You purchased the {0}! Your attack power increases.",
+      "merchant_item_sold_out": "That item is already sold out.",
+      "merchant_not_enough_gold": "You do not have enough gold for that item.",
+      "merchant_leave": "You bid farewell to the merchant and return to the crossroads.",
+      "armor_absorbed_damage": "Your magical armor absorbs {0} damage!"
     },
     "raceMap": {
       "human": "Human",
@@ -100,7 +117,14 @@
       "lightning bolt spell": "lightning bolt spell",
       "dagger": "dagger",
       "long bow": "long bow",
-      "claws": "claws"
+      "claws": "claws",
+      "flaming broadsword": "flaming broadsword",
+      "meteor strike spell": "meteor strike spell",
+      "shadowblade dagger": "shadowblade dagger",
+      "elven composite bow": "elven composite bow"
+    },
+    "displayArmorMap": {
+      "magical plate armor": "magical plate armor"
     }
   },
   "Spanish": {
@@ -173,7 +197,24 @@
       "dragon_damage_reply_2": "Impresionante! Tal vez realmente valga la pena tostarte...",
       "dragon_damage_reply_3": "Eso... fue inesperado. Pero te aseguro que no volvera a pasar.",
       "dragon_damage_reply_4": "Vaya! Tienes mas fuerza de la que pensaba!",
-      "enter_choice": "Escribe tu opcion: "
+      "enter_choice": "Escribe tu opcion: ",
+      "stats_gold": "Oro: ",
+      "stats_armor": "Armadura: ",
+      "stats_armor_defense": "Reduccion de Dano de Armadura: ",
+      "armor_none": "Ninguna",
+      "merchant_intro": "Caminas por el sendero sur y entras en un claro oculto. Un misterioso comerciante te saluda: 'Saludos viajero! Te gustaria comprar mis articulos magicos?'",
+      "merchant_gold_display": "Tu Oro: {0}",
+      "merchant_menu": "Que te gustaria comprar?",
+      "merchant_option_armor": "1. Armadura Magica (30 Oro) - Reduce el dano del dragon en 4",
+      "merchant_option_weapon": "2. Arma Magica ({0}) (30 Oro) - Dano incrementado",
+      "merchant_option_exit": "3. Dejar al comerciante y volver al camino",
+      "merchant_sold_out_tag": " [AGOTADO]",
+      "merchant_bought_armor": "Has comprado una armadura magica de placas! Tu defensa aumenta.",
+      "merchant_bought_weapon": "Has comprado {0}! Tu poder de ataque aumenta.",
+      "merchant_item_sold_out": "Ese articulo ya esta agotado.",
+      "merchant_not_enough_gold": "No tienes suficiente oro para ese articulo.",
+      "merchant_leave": "Te despides del comerciante y regresas al cruce de caminos.",
+      "armor_absorbed_damage": "Tu armadura magica absorbe {0} de dano!"
     },
     "raceMap": {
       "humano": "Human",
@@ -204,7 +245,14 @@
       "lightning bolt spell": "hechizo de rayo",
       "dagger": "daga",
       "long bow": "arco largo",
-      "claws": "garras"
+      "claws": "garras",
+      "flaming broadsword": "espada ancha llameante",
+      "meteor strike spell": "hechizo de lluvia de meteoros",
+      "shadowblade dagger": "daga filo sombrio",
+      "elven composite bow": "arco compuesto elfico"
+    },
+    "displayArmorMap": {
+      "magical plate armor": "armadura magica de placas"
     }
   },
   "French": {
@@ -277,7 +325,24 @@
       "dragon_damage_reply_2": "Impressionnant! Tu vaux peut-etre vraiment la peine d'etre grille...",
       "dragon_damage_reply_3": "C'etait... inattendu. Mais je t'assure que cela ne se reproduira pas.",
       "dragon_damage_reply_4": "Eh bien! Tu as plus de mordant que je ne le pensais!",
-      "enter_choice": "Entrez votre choix : "
+      "enter_choice": "Entrez votre choix : ",
+      "stats_gold": "Or: ",
+      "stats_armor": "Armure: ",
+      "stats_armor_defense": "Reduction de Degats de l'Armure: ",
+      "armor_none": "Aucune",
+      "merchant_intro": "Vous descendez le sentier sud et entrez dans une clairiere cachee. Un mysterieux marchand vous salue: 'Salutations voyageur! Souhaitez-vous acheter mes marchandises magiques?'",
+      "merchant_gold_display": "Votre Or: {0}",
+      "merchant_menu": "Que souhaitez-vous acheter?",
+      "merchant_option_armor": "1. Armure Magique (30 Or) - Reduit les degats du dragon de 4",
+      "merchant_option_weapon": "2. Arme Magique ({0}) (30 Or) - Degats accrus",
+      "merchant_option_exit": "3. Quitter le marchand et retourner sur le chemin",
+      "merchant_sold_out_tag": " [EPUISE]",
+      "merchant_bought_armor": "Vous avez achete une armure de plaques magique! Votre defense augmente.",
+      "merchant_bought_weapon": "Vous avez achete {0}! Votre puissance d'attaque augmente.",
+      "merchant_item_sold_out": "Cet article est deja epuise.",
+      "merchant_not_enough_gold": "Vous n'avez pas assez d'or pour cet article.",
+      "merchant_leave": "Vous dites adieu au marchand et retournez au carrefour.",
+      "armor_absorbed_damage": "Votre armure magique absorbe {0} degats!"
     },
     "raceMap": {
       "humain": "Human",
@@ -308,7 +373,14 @@
       "lightning bolt spell": "sort d'eclair",
       "dagger": "dague",
       "long bow": "arc long",
-      "claws": "griffes"
+      "claws": "griffes",
+      "flaming broadsword": "epee large flamboyante",
+      "meteor strike spell": "sort de frappe de meteore",
+      "shadowblade dagger": "dague de l'ombre",
+      "elven composite bow": "arc composite elfique"
+    },
+    "displayArmorMap": {
+      "magical plate armor": "armure de plaques magique"
     }
   },
   "Italian": {
@@ -381,7 +453,24 @@
       "dragon_damage_reply_2": "Impressionante! Forse vale davvero la pena arrostirti...",
       "dragon_damage_reply_3": "Questo... era inaspettato. Ma ti assicuro che non accadra di nuovo.",
       "dragon_damage_reply_4": "Perbacco! Hai piu mordente di quanto pensassi!",
-      "enter_choice": "Inserisci scelta: "
+      "enter_choice": "Inserisci scelta: ",
+      "stats_gold": "Oro: ",
+      "stats_armor": "Armatura: ",
+      "stats_armor_defense": "Riduzione Danno dell'Armatura: ",
+      "armor_none": "Nessuna",
+      "merchant_intro": "Cammini lungo il sentiero a sud ed entri in una radura nascosta. Un misterioso mercante ti saluta: 'Saluti viaggiatore! Vorresti comprare i miei articoli magici?'",
+      "merchant_gold_display": "Il Tuo Oro: {0}",
+      "merchant_menu": "Cosa desideri comprare?",
+      "merchant_option_armor": "1. Armatura Magica (30 Oro) - Riduce il danno del drago di 4",
+      "merchant_option_weapon": "2. Arma Magica ({0}) (30 Oro) - Danno aumentato",
+      "merchant_option_exit": "3. Lascia il mercante e torna al sentiero",
+      "merchant_sold_out_tag": " [ESAURITO]",
+      "merchant_bought_armor": "Hai acquistato un'armatura a piastre magica! La tua difesa aumenta.",
+      "merchant_bought_weapon": "Hai acquistato {0}! Il tuo potere d'attacco aumenta.",
+      "merchant_item_sold_out": "Quell'articolo e gia esaurito.",
+      "merchant_not_enough_gold": "Non hai abbastanza oro per quell'articolo.",
+      "merchant_leave": "Saluti il mercante e torni al bivio.",
+      "armor_absorbed_damage": "La tua armatura magica assorbe {0} danni!"
     },
     "raceMap": {
       "umano": "Human",
@@ -412,7 +501,14 @@
       "lightning bolt spell": "incantesimo fulmine",
       "dagger": "pugnale",
       "long bow": "arco lungo",
-      "claws": "artigli"
+      "claws": "artigli",
+      "flaming broadsword": "spadone fiammeggiante",
+      "meteor strike spell": "incantesimo pioggia di meteore",
+      "shadowblade dagger": "pugnale lama d'ombra",
+      "elven composite bow": "arco composito elfico"
+    },
+    "displayArmorMap": {
+      "magical plate armor": "armatura a piastre magica"
     }
   }
 }

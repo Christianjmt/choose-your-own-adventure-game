@@ -92,7 +92,19 @@ public class Dragon
             return string.Join(Environment.NewLine, output);
         }
 
-        int damage = RollDamage();
+        int rawDamage = RollDamage();
+        int damage = rawDamage;
+
+        if (player.Armor != null)
+        {
+            damage = Math.Max(1, rawDamage - player.Armor.DamageReduction);
+            int absorbed = rawDamage - damage;
+            if (absorbed > 0)
+            {
+                output.Add(string.Format(messages.GetMessage("armor_absorbed_damage"), absorbed));
+            }
+        }
+
         player.HealthPoints -= damage;
 
         if (player.HealthPoints < 0)

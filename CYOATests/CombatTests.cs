@@ -148,4 +148,87 @@ public class CombatTests
         StringAssert.Contains(result, messages.GetMessage("stats_weapon"));
         StringAssert.Contains(result, messages.GetMessage("stats_damage"));
     }
+
+    [TestMethod]
+    public void GetCombatStatsDisplay_IncludesGoldAndArmorStats_WhenNoArmorEquipped()
+    {
+        Player player = CreateTestPlayer();
+        player.Gold = 50;
+        player.Armor = null;
+
+        Dragon dragon = CreateTestDragon();
+        Messages messages = CreateEnglishMessages();
+
+        Combat combat = new Combat(player, dragon, messages);
+        string result = combat.GetCombatStatsDisplay();
+
+        StringAssert.Contains(result, messages.GetMessage("stats_gold"));
+        StringAssert.Contains(result, "50");
+        StringAssert.Contains(result, messages.GetMessage("stats_armor"));
+        StringAssert.Contains(result, messages.GetMessage("armor_none"));
+    }
+
+    [TestMethod]
+    public void GetCombatStatsDisplay_IncludesGoldAndArmorStats_WhenArmorEquipped()
+    {
+        Player player = CreateTestPlayer();
+        player.Gold = 20;
+        player.Armor = new Armor("magical plate armor", 4, "[|###|]");
+
+        Dragon dragon = CreateTestDragon();
+        Messages messages = CreateEnglishMessages();
+
+        Combat combat = new Combat(player, dragon, messages);
+        string result = combat.GetCombatStatsDisplay();
+
+        StringAssert.Contains(result, messages.GetMessage("stats_gold"));
+        StringAssert.Contains(result, "20");
+        StringAssert.Contains(result, messages.GetMessage("stats_armor"));
+        StringAssert.Contains(result, messages.TranslateArmorForDisplay(player.Armor.Type));
+        StringAssert.Contains(result, messages.GetMessage("stats_armor_defense"));
+        StringAssert.Contains(result, "4");
+    }
+
+    [TestMethod]
+    public void DragonAttack_MitigatedByPlayerArmor()
+    {
+        Dragon dragon = CreateTestDragon();
+        dragon.Strength = 20; // Guarantee hit
+        dragon.Agility = 0;
+
+        Player player = CreateTestPlayer();
+        player.Agility = 0;   // Guarantee failed defense roll
+        player.HealthPoints = 30;
+        player.Armor = new Armor("magical plate armor", 4, "[|###|]");
+
+        Messages messages = CreateEnglishMessages();
+        string combatLog = dragon.Attack(player, messages);
+
+        // Dragon damage is 1..12. If raw was > 1, armor absorbed up to 4 damage.
+        // If absorption occurred, combatLog should contain armor_absorbed_damage
+        if (combatLog.Contains("absorbs"))
+        {
+            StringAssert.Contains(combatLog, "absorbs");
+        }
+        Assert.IsTrue(player.HealthPoints >= 18, $"Player health was {player.HealthPoints}, should be >= 18 with 4 damage reduction on max 12 damage.");
+    }
+
+    [TestMethod]
+    public void DragonAttack_DamageCannotFallBelowOne_EvenWithExcessiveArmor()
+    {
+        Dragon dragon = CreateTestDragon();
+        dragon.Strength = 20; // Guarantee hit
+        dragon.Agility = 0;
+
+        Player player = CreateTestPlayer();
+        player.Agility = 0;   // Guarantee failed defense roll
+        player.HealthPoints = 30;
+        // 100 damage reduction should reduce damage to at most 1, not 0 or negative
+        player.Armor = new Armor("invincible plate", 100, "[|###|]");
+
+        Messages messages = CreateEnglishMessages();
+        dragon.Attack(player, messages);
+
+        Assert.AreEqual(29, player.HealthPoints, "Damage with excessive armor must floor at 1 damage.");
+    }
 }

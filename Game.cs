@@ -42,6 +42,8 @@ public class Game
                 Player player = new Player();
                 player.CreateCharacter(messages);
 
+                Merchant merchant = new Merchant();
+
                 bool inAdventureMenu = true;
                 while (inAdventureMenu)
                 {
@@ -55,14 +57,16 @@ public class Game
                     }
                     else if (selectedPath == "south")
                     {
-                        Console.WriteLine(messages.GetMessage("south_path_narrative"));
+                        merchant.EnterShop(player, messages);
                     }
                     else if (selectedPath == "north")
                     {
-                        HandleDragonEncounter(player, dragon, messages);
-
-                        running = false;
-                        inAdventureMenu = false;
+                        bool adventureEnded = HandleDragonEncounter(player, dragon, messages);
+                        if (adventureEnded)
+                        {
+                            running = false;
+                            inAdventureMenu = false;
+                        }
                     }
                 }
             }
@@ -133,7 +137,7 @@ public class Game
         }
     }
 
-    private void HandleDragonEncounter(Player player, Dragon dragon, Messages messages)
+    private bool HandleDragonEncounter(Player player, Dragon dragon, Messages messages)
     {
         Console.WriteLine(messages.GetMessage("north_path_narrative"));
 
@@ -156,20 +160,19 @@ public class Game
 
                 if (combat.PlayerRetreated)
                 {
-                    return; // combat already handled retreat message
+                    return false; // combat already handled retreat message
                 }
                 else
                 {
                     EndGame(playerWon, false, messages);
+                    return true;
                 }
-
-                return;
             }
 
             if (input == "r" || input == "retreat")
             {
                 Console.WriteLine(messages.GetMessage("retreat"));
-                return;
+                return false;
             }
 
             Console.WriteLine(messages.GetMessage("invalid"));
