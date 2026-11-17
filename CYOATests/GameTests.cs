@@ -319,6 +319,34 @@ public class GameTests
     }
 
     [TestMethod]
+    public void IsValidCombatChoice_ReturnsTrue_ForH()
+    {
+        Game game = new Game();
+        Assert.IsTrue(game.IsValidCombatChoice("h"));
+    }
+
+    [TestMethod]
+    public void IsValidCombatChoice_ReturnsTrue_ForHeal()
+    {
+        Game game = new Game();
+        Assert.IsTrue(game.IsValidCombatChoice("heal"));
+    }
+
+    [TestMethod]
+    public void IsValidCombatChoice_ReturnsTrue_ForUppercaseH()
+    {
+        Game game = new Game();
+        Assert.IsTrue(game.IsValidCombatChoice("H"));
+    }
+
+    [TestMethod]
+    public void IsValidCombatChoice_ReturnsTrue_ForUppercaseHeal()
+    {
+        Game game = new Game();
+        Assert.IsTrue(game.IsValidCombatChoice("HEAL"));
+    }
+
+    [TestMethod]
     public void IsValidCombatChoice_ReturnsFalse_ForInvalidInput()
     {
         Game game = new Game();
@@ -399,5 +427,100 @@ public class GameTests
     {
         Game game = new Game();
         Assert.IsTrue(game.IsValidCombatChoice("  a  "));
+    }
+
+    // --- Ancient Shrine & East Path Tests ---
+
+    [TestMethod]
+    public void IsValidPathChoice_ReturnsTrue_ForEast()
+    {
+        Game game = new Game();
+        Assert.IsTrue(game.IsValidPathChoice("east"));
+        Assert.IsTrue(game.IsValidPathChoice("EAST"));
+    }
+
+    [TestMethod]
+    public void IsValidPathChoice_ReturnsTrue_ForX()
+    {
+        Game game = new Game();
+        Assert.IsTrue(game.IsValidPathChoice("x"));
+        Assert.IsTrue(game.IsValidPathChoice("X"));
+    }
+
+    [TestMethod]
+    public void ShrineTrial_RollGreaterOrEqualTo12_ClaimsPotionWhenBeltHasSpace()
+    {
+        Game game = new Game();
+        Player player = new Player { HealingPotions = 1 };
+
+        var result = game.EvaluateShrineTrial(player, 12);
+
+        Assert.AreEqual(Game.ShrineTrialResult.SuccessClaimed, result);
+        Assert.AreEqual(2, player.HealingPotions);
+        Assert.IsTrue(game.ShrineClaimed);
+        Assert.IsFalse(game.ShrineSealed);
+    }
+
+    [TestMethod]
+    public void ShrineTrial_RollGreaterOrEqualTo12_DoesNotClaimWhenBeltFull()
+    {
+        Game game = new Game();
+        Player player = new Player { HealingPotions = 3 };
+
+        var result = game.EvaluateShrineTrial(player, 15);
+
+        Assert.AreEqual(Game.ShrineTrialResult.SuccessBeltFull, result);
+        Assert.AreEqual(3, player.HealingPotions);
+        Assert.IsFalse(game.ShrineClaimed);
+        Assert.IsFalse(game.ShrineSealed);
+    }
+
+    [TestMethod]
+    public void ShrineTrial_RollLessThan12_SealsShrineWithoutDamagingPlayer()
+    {
+        Game game = new Game();
+        Player player = new Player { HealthPoints = 20, HealingPotions = 0 };
+
+        var result = game.EvaluateShrineTrial(player, 11);
+
+        Assert.AreEqual(Game.ShrineTrialResult.FailedSealed, result);
+        Assert.AreEqual(20, player.HealthPoints);
+        Assert.AreEqual(0, player.HealingPotions);
+        Assert.IsTrue(game.ShrineSealed);
+        Assert.IsFalse(game.ShrineClaimed);
+    }
+
+    [TestMethod]
+    public void ShrineTrial_WhenAlreadyClaimed_ReturnsAlreadyClaimed()
+    {
+        Game game = new Game { ShrineClaimed = true };
+        Player player = new Player { HealingPotions = 0 };
+
+        var result = game.EvaluateShrineTrial(player, 20);
+
+        Assert.AreEqual(Game.ShrineTrialResult.AlreadyClaimed, result);
+        Assert.AreEqual(0, player.HealingPotions);
+    }
+
+    [TestMethod]
+    public void ShrineTrial_WhenAlreadySealed_ReturnsAlreadySealed()
+    {
+        Game game = new Game { ShrineSealed = true };
+        Player player = new Player { HealingPotions = 0 };
+
+        var result = game.EvaluateShrineTrial(player, 20);
+
+        Assert.AreEqual(Game.ShrineTrialResult.AlreadySealed, result);
+        Assert.AreEqual(0, player.HealingPotions);
+    }
+
+    [TestMethod]
+    public void ResetShrineAfterDragonRetreat_UnsealsShrine()
+    {
+        Game game = new Game { ShrineSealed = true };
+
+        game.ResetShrineAfterDragonRetreat();
+
+        Assert.IsFalse(game.ShrineSealed);
     }
 }

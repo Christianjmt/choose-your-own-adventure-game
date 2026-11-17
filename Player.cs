@@ -9,6 +9,8 @@ public class Player
     public int Strength { get; set; }
     public int Agility { get; set; }
     public int HealthPoints { get; set; }
+    public int MaxHealthPoints { get; set; }
+    public int HealingPotions { get; set; } = 0;
     public int Gold { get; set; } = 50;
 
     public Weapon? Weapon { get; set; }
@@ -120,6 +122,7 @@ public class Player
     {
         PromptRoll(messages.GetMessage("roll_health"), messages);
         HealthPoints = _die.Roll(20) + strengthModifier;
+        MaxHealthPoints = HealthPoints;
     }
 
     private void PromptForNextAction(Messages messages)
@@ -147,6 +150,7 @@ public class Player
         Console.WriteLine(messages.GetMessage("stats_strength") + Strength);
         Console.WriteLine(messages.GetMessage("stats_agility") + Agility);
         Console.WriteLine(messages.GetMessage("stats_health") + HealthPoints);
+        Console.WriteLine(messages.GetMessage("stats_potions") + HealingPotions + "/3");
         Console.WriteLine(messages.GetMessage("stats_gold") + Gold);
 
         if (Weapon != null)
@@ -164,6 +168,16 @@ public class Player
         {
             Console.WriteLine(messages.GetMessage("stats_armor") + messages.GetMessage("armor_none"));
         }
+    }
+
+    public bool HealWithPotion()
+    {
+        if (HealingPotions <= 0 || HealthPoints >= MaxHealthPoints)
+            return false;
+
+        HealthPoints = MaxHealthPoints;
+        HealingPotions--;
+        return true;
     }
 
     public int RollAttack()

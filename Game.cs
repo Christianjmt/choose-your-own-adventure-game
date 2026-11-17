@@ -1,5 +1,50 @@
 public class Game
 {
+    public bool ShrineClaimed { get; set; } = false;
+    public bool ShrineSealed { get; set; } = false;
+
+    public enum ShrineTrialResult
+    {
+        SuccessClaimed,
+        SuccessBeltFull,
+        FailedSealed,
+        AlreadyClaimed,
+        AlreadySealed
+    }
+
+    public ShrineTrialResult EvaluateShrineTrial(Player player, int d20Roll)
+    {
+        if (ShrineClaimed)
+            return ShrineTrialResult.AlreadyClaimed;
+
+        if (ShrineSealed)
+            return ShrineTrialResult.AlreadySealed;
+
+        if (d20Roll >= 12)
+        {
+            if (player.HealingPotions < 3)
+            {
+                player.HealingPotions++;
+                ShrineClaimed = true;
+                return ShrineTrialResult.SuccessClaimed;
+            }
+            else
+            {
+                return ShrineTrialResult.SuccessBeltFull;
+            }
+        }
+        else
+        {
+            ShrineSealed = true;
+            return ShrineTrialResult.FailedSealed;
+        }
+    }
+
+    public void ResetShrineAfterDragonRetreat()
+    {
+        ShrineSealed = false;
+    }
+
     public void StartGame()
     {
         // Title screen
@@ -59,6 +104,10 @@ public class Game
                     {
                         merchant.EnterShop(player, messages);
                     }
+                    else if (selectedPath == "east")
+                    {
+                        HandleShrineEncounter(player, die, messages);
+                    }
                     else if (selectedPath == "north")
                     {
                         bool adventureEnded = HandleDragonEncounter(player, dragon, messages);
@@ -105,7 +154,8 @@ public class Game
         string trimmed = input.Trim().ToLower();
         return trimmed == "n" || trimmed == "north" ||
                trimmed == "s" || trimmed == "south" ||
-               trimmed == "e" || trimmed == "exit";
+               trimmed == "e" || trimmed == "east" ||
+               trimmed == "x" || trimmed == "exit";
     }
 
     public bool IsValidCombatChoice(string? input)
@@ -113,6 +163,7 @@ public class Game
         if (string.IsNullOrWhiteSpace(input)) return false;
         string trimmed = input.Trim().ToLower();
         return trimmed == "a" || trimmed == "attack" ||
+               trimmed == "h" || trimmed == "heal" ||
                trimmed == "r" || trimmed == "retreat";
     }
 
@@ -130,11 +181,65 @@ public class Game
             if (input == "south" || input == "s")
                 return "south";
 
-            if (input == "exit" || input == "e")
+            if (input == "east" || input == "e")
+                return "east";
+
+            if (input == "exit" || input == "x")
                 return "exit";
 
             Console.WriteLine(messages.GetMessage("path_invalid"));
         }
+    }
+
+    public void HandleShrineEncounter(Player player, Die die, Messages messages)
+    {
+        Console.WriteLine();
+        Console.WriteLine(messages.GetMessage("shrine_intro"));
+        Console.WriteLine();
+
+        if (ShrineClaimed)
+        {
+            Console.WriteLine(messages.GetMessage("shrine_already_claimed"));
+            Console.WriteLine();
+            return;
+        }
+
+        if (ShrineSealed)
+        {
+            Console.WriteLine(messages.GetMessage("shrine_sealed"));
+            Console.WriteLine();
+            return;
+        }
+
+        while (true)
+        {
+            Console.WriteLine(messages.GetMessage("shrine_roll_prompt"));
+            string? input = Console.ReadLine()?.Trim().ToLower();
+            if (input == "roll")
+                break;
+
+            Console.WriteLine(messages.GetMessage("roll_invalid"));
+        }
+
+        int roll = die.Roll(20);
+        Console.WriteLine(string.Format(messages.GetMessage("shrine_roll_result"), roll));
+
+        var result = EvaluateShrineTrial(player, roll);
+        if (result == ShrineTrialResult.SuccessClaimed)
+        {
+            Console.WriteLine(Combat.PotionAsciiArt);
+            Console.WriteLine(messages.GetMessage("shrine_success"));
+        }
+        else if (result == ShrineTrialResult.SuccessBeltFull)
+        {
+            Console.WriteLine(messages.GetMessage("shrine_success_belt_full"));
+        }
+        else if (result == ShrineTrialResult.FailedSealed)
+        {
+            Console.WriteLine(messages.GetMessage("shrine_failure"));
+        }
+
+        Console.WriteLine();
     }
 
     private bool HandleDragonEncounter(Player player, Dragon dragon, Messages messages)
@@ -160,6 +265,7 @@ public class Game
 
                 if (combat.PlayerRetreated)
                 {
+                    ResetShrineAfterDragonRetreat();
                     return false; // combat already handled retreat message
                 }
                 else
@@ -171,6 +277,7 @@ public class Game
 
             if (input == "r" || input == "retreat")
             {
+                ResetShrineAfterDragonRetreat();
                 Console.WriteLine(messages.GetMessage("retreat"));
                 return false;
             }

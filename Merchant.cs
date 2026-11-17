@@ -6,6 +6,7 @@ public class Merchant
     public bool WeaponSold { get; set; } = false;
     public int ArmorCost { get; } = 30;
     public int WeaponCost { get; } = 30;
+    public int PotionCost { get; } = 10;
 
     public Weapon GetUpgradedWeapon(string? occupation)
     {
@@ -42,11 +43,21 @@ public class Merchant
         return true;
     }
 
+    public bool BuyPotion(Player player)
+    {
+        if (player.Gold < PotionCost || player.HealingPotions >= 3)
+            return false;
+
+        player.Gold -= PotionCost;
+        player.HealingPotions++;
+        return true;
+    }
+
     public bool IsValidChoice(string? input)
     {
         if (string.IsNullOrWhiteSpace(input)) return false;
         string trimmed = input.Trim();
-        return trimmed == "1" || trimmed == "2" || trimmed == "3";
+        return trimmed == "1" || trimmed == "2" || trimmed == "3" || trimmed == "4";
     }
 
     public void EnterShop(Player player, Messages messages)
@@ -71,7 +82,7 @@ public class Merchant
             if (WeaponSold)
                 weaponOption += messages.GetMessage("merchant_sold_out_tag");
             Console.WriteLine(weaponOption);
-
+            Console.WriteLine(messages.GetMessage("merchant_option_potion"));
             Console.WriteLine(messages.GetMessage("merchant_option_exit"));
             Console.Write(messages.GetMessage("enter_choice"));
 
@@ -112,6 +123,23 @@ public class Merchant
                 Console.WriteLine();
             }
             else if (choice == "3")
+            {
+                if (player.HealingPotions >= 3)
+                {
+                    Console.WriteLine(messages.GetMessage("merchant_potion_belt_full"));
+                }
+                else if (player.Gold < PotionCost)
+                {
+                    Console.WriteLine(messages.GetMessage("merchant_not_enough_gold"));
+                }
+                else
+                {
+                    BuyPotion(player);
+                    Console.WriteLine(messages.GetMessage("merchant_bought_potion"));
+                }
+                Console.WriteLine();
+            }
+            else if (choice == "4")
             {
                 Console.WriteLine(messages.GetMessage("merchant_leave"));
                 Console.WriteLine();

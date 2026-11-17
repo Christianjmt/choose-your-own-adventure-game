@@ -231,4 +231,20 @@ public class CombatTests
 
         Assert.AreEqual(29, player.HealthPoints, "Damage with excessive armor must floor at 1 damage.");
     }
+
+    [TestMethod]
+    public void GetCombatStatsDisplay_IncludesPotionBeltCount()
+    {
+        Player player = CreateTestPlayer();
+        player.HealingPotions = 2;
+
+        Dragon dragon = CreateTestDragon();
+        Messages messages = CreateEnglishMessages();
+
+        Combat combat = new Combat(player, dragon, messages);
+        string result = combat.GetCombatStatsDisplay();
+
+        StringAssert.Contains(result, messages.GetMessage("stats_potions"));
+        StringAssert.Contains(result, "2/3");
+    }
 }

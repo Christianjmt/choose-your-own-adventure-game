@@ -382,4 +382,43 @@ public class MessagesTests
         string result = messages.TranslateWeaponForDisplay(weaponKey);
         Assert.AreEqual(expectedTranslation, result);
     }
+
+    [TestMethod]
+    [DataRow("English")]
+    [DataRow("Spanish")]
+    [DataRow("French")]
+    [DataRow("Italian")]
+    public void ReadDictionary_LoadsAllPotionAndShrineKeys_AcrossLanguages(string language)
+    {
+        Messages messages = new Messages();
+        messages.SetCurrentLanguage(language);
+        messages.ReadDictionary();
+
+        string[] requiredKeys = new[]
+        {
+            "stats_potions",
+            "potion_already_used_round",
+            "potion_already_full_health",
+            "potion_none_remaining",
+            "potion_used_combat",
+            "merchant_option_potion",
+            "merchant_potion_belt_full",
+            "merchant_bought_potion",
+            "shrine_intro",
+            "shrine_roll_prompt",
+            "shrine_roll_result",
+            "shrine_success",
+            "shrine_success_belt_full",
+            "shrine_failure",
+            "shrine_sealed",
+            "shrine_already_claimed"
+        };
+
+        foreach (var key in requiredKeys)
+        {
+            string message = messages.GetMessage(key);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(message), $"Key '{key}' was empty in {language}.");
+            Assert.AreNotEqual($"[{key}]", message, $"Key '{key}' was missing in {language}.");
+        }
+    }
 }

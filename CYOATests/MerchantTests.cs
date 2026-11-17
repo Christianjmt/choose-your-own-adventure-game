@@ -27,6 +27,7 @@ public class MerchantTests
         Assert.IsFalse(merchant.WeaponSold);
         Assert.AreEqual(30, merchant.ArmorCost);
         Assert.AreEqual(30, merchant.WeaponCost);
+        Assert.AreEqual(10, merchant.PotionCost);
     }
 
     [TestMethod]
@@ -37,10 +38,11 @@ public class MerchantTests
         Assert.IsTrue(merchant.IsValidChoice("1"));
         Assert.IsTrue(merchant.IsValidChoice("2"));
         Assert.IsTrue(merchant.IsValidChoice("3"));
+        Assert.IsTrue(merchant.IsValidChoice("4"));
         Assert.IsTrue(merchant.IsValidChoice(" 1 "));
 
         Assert.IsFalse(merchant.IsValidChoice("0"));
-        Assert.IsFalse(merchant.IsValidChoice("4"));
+        Assert.IsFalse(merchant.IsValidChoice("5"));
         Assert.IsFalse(merchant.IsValidChoice("attack"));
         Assert.IsFalse(merchant.IsValidChoice(""));
         Assert.IsFalse(merchant.IsValidChoice(null));
@@ -165,5 +167,47 @@ public class MerchantTests
         Assert.IsTrue(armorBought);
         Assert.IsFalse(weaponBought);
         Assert.AreEqual(20, player.Gold);
+    }
+
+    [TestMethod]
+    public void Merchant_BuyPotion_SucceedsWhenPlayerHasEnoughGoldAndSpace()
+    {
+        Merchant merchant = new Merchant();
+        Player player = CreateTestPlayer("Fighter", 50);
+        player.HealingPotions = 1;
+
+        bool success = merchant.BuyPotion(player);
+
+        Assert.IsTrue(success);
+        Assert.AreEqual(40, player.Gold);
+        Assert.AreEqual(2, player.HealingPotions);
+    }
+
+    [TestMethod]
+    public void Merchant_BuyPotion_FailsWhenPlayerHasInsufficientGold()
+    {
+        Merchant merchant = new Merchant();
+        Player player = CreateTestPlayer("Fighter", 5);
+        player.HealingPotions = 0;
+
+        bool success = merchant.BuyPotion(player);
+
+        Assert.IsFalse(success);
+        Assert.AreEqual(5, player.Gold);
+        Assert.AreEqual(0, player.HealingPotions);
+    }
+
+    [TestMethod]
+    public void Merchant_BuyPotion_FailsWhenPotionBeltIsFull()
+    {
+        Merchant merchant = new Merchant();
+        Player player = CreateTestPlayer("Fighter", 50);
+        player.HealingPotions = 3;
+
+        bool success = merchant.BuyPotion(player);
+
+        Assert.IsFalse(success);
+        Assert.AreEqual(50, player.Gold);
+        Assert.AreEqual(3, player.HealingPotions);
     }
 }

@@ -6,6 +6,13 @@ public class Combat
 
     public bool PlayerRetreated { get; private set; }
 
+    public const string PotionAsciiArt =
+@"     _____
+    `.___.'
+     /___\
+     |===|
+     '---'";
+
     public Combat(Player player, Dragon dragon, Messages messages)
     {
         this.player = player;
@@ -30,6 +37,7 @@ public class Combat
             if (player.HealthPoints <= 0)
                 return false;
 
+            bool usedPotionThisRound = false;
             while (true)
             {
                 Console.WriteLine(messages.GetMessage("attack_prompt"));
@@ -44,6 +52,34 @@ public class Combat
 
                 if (input == "a" || input == "attack")
                     break;
+
+                if (input == "h" || input == "heal")
+                {
+                    if (usedPotionThisRound)
+                    {
+                        Console.WriteLine(messages.GetMessage("potion_already_used_round"));
+                        continue;
+                    }
+
+                    if (player.HealthPoints >= player.MaxHealthPoints)
+                    {
+                        Console.WriteLine(messages.GetMessage("potion_already_full_health"));
+                        continue;
+                    }
+
+                    if (player.HealingPotions <= 0)
+                    {
+                        Console.WriteLine(messages.GetMessage("potion_none_remaining"));
+                        continue;
+                    }
+
+                    player.HealWithPotion();
+                    usedPotionThisRound = true;
+                    Console.WriteLine(PotionAsciiArt);
+                    Console.WriteLine(string.Format(messages.GetMessage("potion_used_combat"), player.HealthPoints));
+                    Console.WriteLine();
+                    continue;
+                }
 
                 Console.WriteLine(messages.GetMessage("invalid"));
             }
@@ -60,6 +96,7 @@ public class Combat
         output.Add(messages.GetMessage("stats_strength") + player.Strength);
         output.Add(messages.GetMessage("stats_agility") + player.Agility);
         output.Add(messages.GetMessage("stats_health") + player.HealthPoints);
+        output.Add(messages.GetMessage("stats_potions") + player.HealingPotions + "/3");
         output.Add(messages.GetMessage("stats_gold") + player.Gold);
 
         if (player.Weapon != null)
