@@ -40,7 +40,7 @@ public class Combat
             bool usedPotionThisRound = false;
             while (true)
             {
-                Console.WriteLine(messages.GetMessage("attack_prompt"));
+                Console.WriteLine(string.Format(messages.GetMessage("attack_prompt"), player.HealingPotions));
                 string? input = Console.ReadLine()?.Trim().ToLower();
 
                 if (input == "r" || input == "retreat")
@@ -52,6 +52,12 @@ public class Combat
 
                 if (input == "a" || input == "attack")
                     break;
+
+                if (input == "i" || input == "inv" || input == "inventory")
+                {
+                    player.DisplayInventory(messages);
+                    continue;
+                }
 
                 if (input == "h" || input == "heal")
                 {

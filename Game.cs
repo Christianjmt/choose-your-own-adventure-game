@@ -108,6 +108,10 @@ public class Game
                     {
                         HandleShrineEncounter(player, die, messages);
                     }
+                    else if (selectedPath == "inventory")
+                    {
+                        player.DisplayInventory(messages);
+                    }
                     else if (selectedPath == "north")
                     {
                         bool adventureEnded = HandleDragonEncounter(player, dragon, messages);
@@ -155,6 +159,7 @@ public class Game
         return trimmed == "n" || trimmed == "north" ||
                trimmed == "s" || trimmed == "south" ||
                trimmed == "e" || trimmed == "east" ||
+               trimmed == "i" || trimmed == "inv" || trimmed == "inventory" ||
                trimmed == "x" || trimmed == "exit";
     }
 
@@ -164,6 +169,7 @@ public class Game
         string trimmed = input.Trim().ToLower();
         return trimmed == "a" || trimmed == "attack" ||
                trimmed == "h" || trimmed == "heal" ||
+               trimmed == "i" || trimmed == "inv" || trimmed == "inventory" ||
                trimmed == "r" || trimmed == "retreat";
     }
 
@@ -183,6 +189,9 @@ public class Game
 
             if (input == "east" || input == "e")
                 return "east";
+
+            if (input == "i" || input == "inv" || input == "inventory")
+                return "inventory";
 
             if (input == "exit" || input == "x")
                 return "exit";

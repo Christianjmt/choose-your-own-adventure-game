@@ -421,4 +421,58 @@ public class MessagesTests
             Assert.AreNotEqual($"[{key}]", message, $"Key '{key}' was missing in {language}.");
         }
     }
+
+    [TestMethod]
+    [DataRow("English")]
+    [DataRow("Spanish")]
+    [DataRow("French")]
+    [DataRow("Italian")]
+    public void ReadDictionary_LoadsAllInventoryKeys_AcrossLanguages(string language)
+    {
+        Messages messages = new Messages();
+        messages.SetCurrentLanguage(language);
+        messages.ReadDictionary();
+
+        string[] requiredKeys = new[]
+        {
+            "inventory_header",
+            "inventory_equipped_header",
+            "inventory_carried_header",
+            "inventory_footer",
+            "inventory_weapon_format",
+            "inventory_armor_format",
+            "inventory_armor_none",
+            "inventory_gold_format",
+            "inventory_potions_format",
+            "path_prompt_full",
+            "path_invalid",
+            "attack_prompt"
+        };
+
+        foreach (var key in requiredKeys)
+        {
+            string message = messages.GetMessage(key);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(message), $"Key '{key}' was empty in {language}.");
+            Assert.AreNotEqual($"[{key}]", message, $"Key '{key}' was missing in {language}.");
+        }
+    }
+
+    [TestMethod]
+    [DataRow("English", "remaining")]
+    [DataRow("Spanish", "restantes")]
+    [DataRow("French", "restantes")]
+    [DataRow("Italian", "rimanenti")]
+    public void AttackPrompt_FormatsWithPotionCount_AcrossLanguages(string language, string expectedKeyword)
+    {
+        Messages messages = new Messages();
+        messages.SetCurrentLanguage(language);
+        messages.ReadDictionary();
+
+        string rawPrompt = messages.GetMessage("attack_prompt");
+        string formattedPrompt = string.Format(rawPrompt, 2);
+
+        StringAssert.Contains(formattedPrompt, "2/3");
+        StringAssert.Contains(formattedPrompt, expectedKeyword);
+        StringAssert.Contains(formattedPrompt, "i");
+    }
 }

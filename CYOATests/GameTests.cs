@@ -256,6 +256,62 @@ public class GameTests
         Assert.IsTrue(game.IsValidPathChoice("E"));
     }
 
+    [TestMethod]
+    public void IsValidPathChoice_ReturnsTrue_ForI()
+    {
+        Game game = new Game();
+        Assert.IsTrue(game.IsValidPathChoice("i"));
+    }
+
+    [TestMethod]
+    public void IsValidPathChoice_ReturnsTrue_ForUppercaseI()
+    {
+        Game game = new Game();
+        Assert.IsTrue(game.IsValidPathChoice("I"));
+    }
+
+    [TestMethod]
+    public void IsValidPathChoice_ReturnsTrue_ForInv()
+    {
+        Game game = new Game();
+        Assert.IsTrue(game.IsValidPathChoice("inv"));
+    }
+
+    [TestMethod]
+    public void IsValidPathChoice_ReturnsTrue_ForUppercaseInv()
+    {
+        Game game = new Game();
+        Assert.IsTrue(game.IsValidPathChoice("INV"));
+    }
+
+    [TestMethod]
+    public void IsValidPathChoice_ReturnsTrue_ForInventory()
+    {
+        Game game = new Game();
+        Assert.IsTrue(game.IsValidPathChoice("inventory"));
+    }
+
+    [TestMethod]
+    public void IsValidPathChoice_ReturnsTrue_ForUppercaseInventory()
+    {
+        Game game = new Game();
+        Assert.IsTrue(game.IsValidPathChoice("INVENTORY"));
+    }
+
+    [TestMethod]
+    public void IsValidPathChoice_ReturnsTrue_ForMixedCaseInventory()
+    {
+        Game game = new Game();
+        Assert.IsTrue(game.IsValidPathChoice("Inventory"));
+    }
+
+    [TestMethod]
+    public void IsValidPathChoice_ReturnsTrue_ForPaddedInventory()
+    {
+        Game game = new Game();
+        Assert.IsTrue(game.IsValidPathChoice("  inv  "));
+    }
+
     // --- IsValidPathChoice: padded input ---
 
     [TestMethod]
@@ -344,6 +400,41 @@ public class GameTests
     {
         Game game = new Game();
         Assert.IsTrue(game.IsValidCombatChoice("HEAL"));
+    }
+
+    [TestMethod]
+    public void IsValidCombatChoice_ReturnsTrue_ForI()
+    {
+        Game game = new Game();
+        Assert.IsTrue(game.IsValidCombatChoice("i"));
+    }
+
+    [TestMethod]
+    public void IsValidCombatChoice_ReturnsTrue_ForInv()
+    {
+        Game game = new Game();
+        Assert.IsTrue(game.IsValidCombatChoice("inv"));
+    }
+
+    [TestMethod]
+    public void IsValidCombatChoice_ReturnsTrue_ForInventory()
+    {
+        Game game = new Game();
+        Assert.IsTrue(game.IsValidCombatChoice("inventory"));
+    }
+
+    [TestMethod]
+    public void IsValidCombatChoice_ReturnsTrue_ForUppercaseI()
+    {
+        Game game = new Game();
+        Assert.IsTrue(game.IsValidCombatChoice("I"));
+    }
+
+    [TestMethod]
+    public void IsValidCombatChoice_ReturnsTrue_ForPaddedInventory()
+    {
+        Game game = new Game();
+        Assert.IsTrue(game.IsValidCombatChoice("  inv  "));
     }
 
     [TestMethod]

@@ -23,3 +23,15 @@ _Avoid_: Boss, monster, beast
 **Ancient Shrine**:
 A stone sanctuary situated to the east of the mountain crossroads where players may attempt a trial to recover a Healing Potion.
 _Avoid_: Temple, ruins, altar, fountain
+
+**Inventory**:
+The comprehensive collection of equipment, consumables, and currency held or worn by the Player.
+_Avoid_: Backpack, bag, stash, items list
+
+**Equipped Gear**:
+The offensive weapon and defensive armor currently donned or wielded by the Player that modify combat outcomes.
+_Avoid_: Loadout, gear set, outfit, equipment slots
+
+**Carried Items**:
+The portable consumables and currency held in the Player's pouches or belt, specifically Gold and Healing Potions.
+_Avoid_: Pocket items, supplies, inventory list

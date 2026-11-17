@@ -170,6 +170,43 @@ public class Player
         }
     }
 
+    public string GetInventoryDisplay(Messages messages)
+    {
+        var lines = new List<string>
+        {
+            messages.GetMessage("inventory_header"),
+            messages.GetMessage("inventory_equipped_header")
+        };
+
+        if (Weapon != null)
+        {
+            string weaponName = messages.TranslateWeaponForDisplay(Weapon.Type);
+            lines.Add(string.Format(messages.GetMessage("inventory_weapon_format"), weaponName, Weapon.MaxDamage));
+        }
+
+        if (Armor != null)
+        {
+            string armorName = messages.TranslateArmorForDisplay(Armor.Type);
+            lines.Add(string.Format(messages.GetMessage("inventory_armor_format"), armorName, Armor.DamageReduction));
+        }
+        else
+        {
+            lines.Add(messages.GetMessage("inventory_armor_none"));
+        }
+
+        lines.Add(messages.GetMessage("inventory_carried_header"));
+        lines.Add(string.Format(messages.GetMessage("inventory_gold_format"), Gold));
+        lines.Add(string.Format(messages.GetMessage("inventory_potions_format"), HealingPotions));
+        lines.Add(messages.GetMessage("inventory_footer"));
+
+        return string.Join(Environment.NewLine, lines);
+    }
+
+    public void DisplayInventory(Messages messages)
+    {
+        Console.WriteLine(GetInventoryDisplay(messages));
+    }
+
     public bool HealWithPotion()
     {
         if (HealingPotions <= 0 || HealthPoints >= MaxHealthPoints)
