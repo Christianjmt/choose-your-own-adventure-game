@@ -22,9 +22,8 @@ public class Game
 
         if (d20Roll >= 12)
         {
-            if (player.HealingPotions < 3)
+            if (player.Inventory.TryAddPotion())
             {
-                player.HealingPotions++;
                 ShrineClaimed = true;
                 return ShrineTrialResult.SuccessClaimed;
             }

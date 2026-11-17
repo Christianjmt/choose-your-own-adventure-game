@@ -93,16 +93,11 @@ public class Dragon
         }
 
         int rawDamage = RollDamage();
-        int damage = rawDamage;
+        int damage = player.Inventory.MitigateDamage(rawDamage, out int absorbed);
 
-        if (player.Armor != null)
+        if (absorbed > 0)
         {
-            damage = Math.Max(1, rawDamage - player.Armor.DamageReduction);
-            int absorbed = rawDamage - damage;
-            if (absorbed > 0)
-            {
-                output.Add(string.Format(messages.GetMessage("armor_absorbed_damage"), absorbed));
-            }
+            output.Add(string.Format(messages.GetMessage("armor_absorbed_damage"), absorbed));
         }
 
         player.HealthPoints -= damage;

@@ -17,6 +17,21 @@ public class PlayerTests
         Assert.AreEqual(0, player.HealingPotions);
 
         Assert.IsNull(player.Weapon);
+        Assert.IsNotNull(player.Inventory);
+    }
+
+    [TestMethod]
+    public void Player_InventoryDelegation_ReflectsDirectMutations()
+    {
+        Player player = new Player();
+        player.Inventory.AddGold(25);
+        player.Inventory.TryAddPotion();
+        Armor armor = new Armor("magical plate armor", 4, "[|###|]");
+        player.Inventory.EquipArmor(armor);
+
+        Assert.AreEqual(75, player.Gold);
+        Assert.AreEqual(1, player.HealingPotions);
+        Assert.AreSame(armor, player.Armor);
     }
 
     [TestMethod]

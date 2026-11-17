@@ -10,11 +10,32 @@ public class Player
     public int Agility { get; set; }
     public int HealthPoints { get; set; }
     public int MaxHealthPoints { get; set; }
-    public int HealingPotions { get; set; } = 0;
-    public int Gold { get; set; } = 50;
 
-    public Weapon? Weapon { get; set; }
-    public Armor? Armor { get; set; }
+    public Inventory Inventory { get; } = new Inventory();
+
+    public int HealingPotions
+    {
+        get => Inventory.HealingPotions;
+        set => Inventory.SetHealingPotions(value);
+    }
+
+    public int Gold
+    {
+        get => Inventory.Gold;
+        set => Inventory.SetGold(value);
+    }
+
+    public Weapon? Weapon
+    {
+        get => Inventory.EquippedWeapon;
+        set => Inventory.EquipWeapon(value);
+    }
+
+    public Armor? Armor
+    {
+        get => Inventory.EquippedArmor;
+        set => Inventory.EquipArmor(value);
+    }
 
     public void CreateCharacter(Messages messages)
     {
@@ -172,34 +193,7 @@ public class Player
 
     public string GetInventoryDisplay(Messages messages)
     {
-        var lines = new List<string>
-        {
-            messages.GetMessage("inventory_header"),
-            messages.GetMessage("inventory_equipped_header")
-        };
-
-        if (Weapon != null)
-        {
-            string weaponName = messages.TranslateWeaponForDisplay(Weapon.Type);
-            lines.Add(string.Format(messages.GetMessage("inventory_weapon_format"), weaponName, Weapon.MaxDamage));
-        }
-
-        if (Armor != null)
-        {
-            string armorName = messages.TranslateArmorForDisplay(Armor.Type);
-            lines.Add(string.Format(messages.GetMessage("inventory_armor_format"), armorName, Armor.DamageReduction));
-        }
-        else
-        {
-            lines.Add(messages.GetMessage("inventory_armor_none"));
-        }
-
-        lines.Add(messages.GetMessage("inventory_carried_header"));
-        lines.Add(string.Format(messages.GetMessage("inventory_gold_format"), Gold));
-        lines.Add(string.Format(messages.GetMessage("inventory_potions_format"), HealingPotions));
-        lines.Add(messages.GetMessage("inventory_footer"));
-
-        return string.Join(Environment.NewLine, lines);
+        return Inventory.GetInventoryDisplay(messages);
     }
 
     public void DisplayInventory(Messages messages)
@@ -209,11 +203,13 @@ public class Player
 
     public bool HealWithPotion()
     {
-        if (HealingPotions <= 0 || HealthPoints >= MaxHealthPoints)
+        if (HealthPoints >= MaxHealthPoints)
+            return false;
+
+        if (!Inventory.TryConsumePotion())
             return false;
 
         HealthPoints = MaxHealthPoints;
-        HealingPotions--;
         return true;
     }
 

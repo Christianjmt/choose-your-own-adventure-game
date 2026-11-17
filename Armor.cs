@@ -10,4 +10,11 @@ public class Armor
         DamageReduction = damageReduction;
         AsciiArt = asciiArt;
     }
+
+    public int AbsorbDamage(int incomingDamage, out int absorbedDamage)
+    {
+        int finalDamage = Math.Max(1, incomingDamage - DamageReduction);
+        absorbedDamage = incomingDamage - finalDamage;
+        return finalDamage;
+    }
 }

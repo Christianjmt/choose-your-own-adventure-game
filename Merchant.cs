@@ -23,33 +23,30 @@ public class Merchant
 
     public bool BuyArmor(Player player)
     {
-        if (ArmorSold || player.Gold < ArmorCost)
+        if (ArmorSold || !player.Inventory.TrySpendGold(ArmorCost))
             return false;
 
-        player.Gold -= ArmorCost;
-        player.Armor = new Armor("magical plate armor", 4, "[|###|]");
+        player.Inventory.EquipArmor(new Armor("magical plate armor", 4, "[|###|]"));
         ArmorSold = true;
         return true;
     }
 
     public bool BuyWeapon(Player player)
     {
-        if (WeaponSold || player.Gold < WeaponCost)
+        if (WeaponSold || !player.Inventory.TrySpendGold(WeaponCost))
             return false;
 
-        player.Gold -= WeaponCost;
-        player.Weapon = GetUpgradedWeapon(player.Occupation);
+        player.Inventory.EquipWeapon(GetUpgradedWeapon(player.Occupation));
         WeaponSold = true;
         return true;
     }
 
     public bool BuyPotion(Player player)
     {
-        if (player.Gold < PotionCost || player.HealingPotions >= 3)
+        if (!player.Inventory.CanAddPotion || !player.Inventory.TrySpendGold(PotionCost))
             return false;
 
-        player.Gold -= PotionCost;
-        player.HealingPotions++;
+        player.Inventory.TryAddPotion();
         return true;
     }
 
